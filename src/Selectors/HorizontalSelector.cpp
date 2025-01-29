@@ -47,8 +47,10 @@ int HorizontalSelector::select(
                 break;
             case KEY_OK: // Select
                 return currentIndex;
-            case KEY_ESC_CUSTOM: // Select
-                return -1;
+            case KEY_ESC_CUSTOM:
+                if (handleInactivity) {
+                    return -1;
+                }
             default:
                 break; // Ignore other inputs
         }
