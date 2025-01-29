@@ -46,6 +46,14 @@ int VerticalSelector::select(
             inactivityManager.reset();
         }
 
+        // Verify shortcuts
+        if (!shortcuts.empty()) {
+            int shortcutIndex = checkShortcut(shortcuts, key);
+            if (shortcutIndex != -1) {
+                return shortcutIndex;
+            }
+        }
+
         switch (key) {
             case KEY_ARROW_UP:
                 currentIndex = (currentIndex > 0) ? currentIndex - 1 : filteredOptions.size() - 1;
@@ -78,6 +86,7 @@ int VerticalSelector::select(
                     filteredOptions = filterOptions(options, searchQuery);
                     currentIndex = 0;
                 }
+                
                 break;
         }
     }
@@ -99,3 +108,13 @@ std::vector<std::string> VerticalSelector::filterOptions(const std::vector<std::
     }
     return filtered;
 }
+
+int VerticalSelector::checkShortcut(const std::vector<std::string>& shortcuts, char key) {
+    for (size_t i = 0; i < shortcuts.size(); ++i) {
+        if (!shortcuts[i].empty() && std::tolower(key) == std::tolower(shortcuts[i][0])) {
+            return i; // Retourne l'index du raccourci correspondant
+        }
+    }
+    return -1; // Aucun raccourci correspondant trouvé
+}
+

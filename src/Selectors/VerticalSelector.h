@@ -21,6 +21,7 @@ private:
 
     std::string toLowerCase(const std::string& input);
     std::vector<std::string> filterOptions(const std::vector<std::string>& options, const std::string& query);
+    int checkShortcut(const std::vector<std::string>& shortcuts, char key);
     GlobalState& globalState = GlobalState::getInstance();
 };
 

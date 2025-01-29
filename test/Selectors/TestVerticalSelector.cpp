@@ -51,4 +51,22 @@ void test_vertical_selector_cancel() {
     TEST_ASSERT_EQUAL(-1, selectedIndex); // Option 3 is selected
 }
 
+void test_vertical_selector_shortcut() {
+    MockView mockView;
+    MockInput mockInput;
+    InactivityManager manager(mockView);
+    VerticalSelector verticalSelector(mockView, mockInput, manager);
+
+    std::vector<std::string> options = {"Open Vault", "Create Vault", "Settings"};
+    std::vector<std::string> shortcuts = {"O", "C", "S"};
+    std::string title = "Vertical Selector Test";
+
+    // Mock input for create vault
+    mockInput.enqueueKey('C');
+
+    int selectedIndex = verticalSelector.select(title, options, false, false, {}, shortcuts, false, false);
+
+    TEST_ASSERT_EQUAL(1, selectedIndex); // "Create Vault" index 1
+}
+
 #endif // TEST_VERTICAL_SELECTORS_H
