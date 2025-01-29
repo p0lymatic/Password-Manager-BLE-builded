@@ -11,7 +11,7 @@ char CardputerInput::handler() {
     // Bouton GO
     if (M5Cardputer.BtnA.isPressed()) {
         delay(150); // debounce
-        return KEY_RETURN_CUSTOM;
+        return KEY_ESC_CUSTOM;
     }
     
     if (M5Cardputer.Keyboard.isChange()) {
