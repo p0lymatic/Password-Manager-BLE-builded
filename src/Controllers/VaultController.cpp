@@ -201,11 +201,11 @@ bool VaultController::loadSdVault() {
                 display.subMessage("Invalid Paswword", 2000);
             }
 
-            display.subMessage("Loading...", 0);
             currentPath = sdService.getParentDirectory(currentPath);
             currentPath = currentPath.empty() ? "/" : currentPath;
         }
-
+        
+        display.subMessage("Loading...", 0);
         elementNames = sdService.getCachedDirectoryElements(currentPath);
         if (elementNames.empty()) {
             display.subMessage("No files or folders found", 1500);
