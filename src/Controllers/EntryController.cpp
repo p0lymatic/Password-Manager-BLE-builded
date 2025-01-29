@@ -79,7 +79,7 @@ bool EntryController::handleEntryUpdate(Entry& entry, Field& field) {
 
     field.setValue(value);
     entryService.updateField(entry, field);
-    display.subMessage("Field updated", 2000);
+    display.subMessage("Field updated", 1000);
     return true;
 }
 
@@ -93,6 +93,7 @@ bool EntryController::handleEntryDeletion() {
         std::vector<std::string> delLabels(labels.size(), "Del");
         auto selectedIndex = verticalSelector.select("Select to remove", labels, true, true, delLabels);
         if (selectedIndex == -1) {break;}
+        delay(200); // debounce in case of double input
         auto confirmation = confirmationSelector.select("Erase Password", "Delete " + labels[selectedIndex] + " ?");
         if (confirmation) {
             entryService.deleteEntry(entries[selectedIndex]);
