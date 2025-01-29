@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <map>
 #include <vector>
 #include <Services/UsbService.h>
 
@@ -24,17 +25,17 @@ enum class KeyboardLayoutEnum {
 class KeyboardLayoutMapper {
 public:
     // Associated label and layout
-    inline static const std::unordered_map<std::string, const uint8_t*> layoutMap = {
+    inline static const std::map<std::string, const uint8_t*> layoutMap = {
         {"English (US)", KeyboardLayout_en_US},
         {"English (UK)", KeyboardLayout_en_UK},
         {"French (FR)", KeyboardLayout_fr_FR},
         {"German (DE)", KeyboardLayout_de_DE},
-        {"Spanish (ES)", KeyboardLayout_es_ES},
         {"Italian (IT)", KeyboardLayout_it_IT},
+        {"Spanish (ES)", KeyboardLayout_es_ES},
         {"Portuguese (PT)", KeyboardLayout_pt_PT},
         {"Portuguese (BR)", KeyboardLayout_pt_BR},
-        {"Swedish (SE)", KeyboardLayout_sv_SE},
         {"Danish (DK)", KeyboardLayout_da_DK},
+        {"Swedish (SE)", KeyboardLayout_sv_SE},
         {"Hungarian (HU)", KeyboardLayout_hu_HU}
     };
 
@@ -48,7 +49,6 @@ public:
         for (const auto& pair : layoutMap) {
             names.push_back(pair.first);
         }
-        std::reverse(names.begin(), names.end());
         return names;
     }
 };
