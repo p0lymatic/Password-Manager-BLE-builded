@@ -85,6 +85,7 @@ void setup() {
     // VerticalSelector
     RUN_TEST(test_vertical_selector_confirm);
     RUN_TEST(test_vertical_selector_cancel);
+    RUN_TEST(test_vertical_selector_shortcut);
 
     // HorizontalSelector
     RUN_TEST(test_horizontal_selector_confirm);
