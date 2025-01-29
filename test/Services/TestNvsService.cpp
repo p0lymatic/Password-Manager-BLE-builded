@@ -6,7 +6,7 @@
 
 void test_save_and_get_string() {
     NvsService nvsService;
-    std::string key = "unitTestKeyToDelete";
+    std::string key = "unitTestKey";
     std::string value = "Hello NVS";
 
     nvsService.saveString(key, value);
@@ -17,7 +17,7 @@ void test_save_and_get_string() {
 
 void test_save_and_get_int() {
     NvsService nvsService;
-    std::string key = "unitTestIntToDelete";
+    std::string key = "unitTestInt";
     int value = 42;
 
     nvsService.saveInt(key, value);

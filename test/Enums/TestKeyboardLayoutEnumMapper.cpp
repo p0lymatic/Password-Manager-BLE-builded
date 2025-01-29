@@ -16,6 +16,8 @@ void test_to_layout_invalid_name() {
 void test_get_all_layout_names() {
     std::vector<std::string> layouts = KeyboardLayoutMapper::getAllLayoutNames();
     TEST_ASSERT_FALSE(layouts.empty());
+    std::string us = "English (US)";
+    TEST_ASSERT_EQUAL_STRING(layouts[2].c_str(), us.c_str());
 }
 
 #endif // TEST_KEYBOARD_LAYOUT_ENUM_H
