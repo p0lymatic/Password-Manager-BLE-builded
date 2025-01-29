@@ -194,7 +194,7 @@ bool VaultController::loadSdVault() {
     do {
         if (sdService.isFile(currentPath)) {
             if (sdService.validateVaultFile(currentPath) && loadDataFromEncryptedFile(currentPath)) {
-                display.subMessage("Vault Loaded", 2000);
+                display.subMessage("Loaded successfully", 2000);
                 return true;
             } else {
                 display.subMessage("Invalid Paswword", 2000);

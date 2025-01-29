@@ -62,12 +62,14 @@ bool EntryController::handleEntryCreation() {
         return false;
     }
 
-    auto username = stringPromptSelector.select("Username", "Enter username", "", false, true, true);
-    auto password = stringPromptSelector.select("Password", "Enter password", "", false, true, true);
-    auto notes = stringPromptSelector.select("Notes", "Enter notes (OK to pass)", "", false, true, true);
+    auto username = stringPromptSelector.select("Username", "Enter username", "", false, true, false);
+    auto password = stringPromptSelector.select("Password", "Enter password", "", false, true, false);
+    auto notes = stringPromptSelector.select("Notes", "Enter notes (OK to pass)", "", false, true, false, 0);
+    notes = notes.empty() ? "No notes" : notes;
 
     auto entry = Entry(servicerName, username, password, notes);
     entryService.addEntry(entry);
+    display.subMessage("successfully created", 1000);
     return true;
 }
 

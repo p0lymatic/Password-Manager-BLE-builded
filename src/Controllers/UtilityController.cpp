@@ -99,7 +99,7 @@ bool UtilityController::handleGeneralSettings() {
     std::vector<std::string> settingLabels = {" Keyboard ", "Brightness", "Screen off", "Vault lock"};
     
     auto layouts = KeyboardLayoutMapper::getAllLayoutNames();
-    auto selectedLayout = globalState.getSelectedKeyboardLayout().empty() ? layouts[0] : globalState.getSelectedKeyboardLayout();
+    auto selectedLayout = globalState.getSelectedKeyboardLayout().empty() ? layouts[2] : globalState.getSelectedKeyboardLayout();
     auto selectedScreenOffTime = timeTransformer.toLabel(globalState.getInactivityScreenTimeout());
     auto selectedLockCloseTime = timeTransformer.toLabel(globalState.getInactivityLockTimeout());
     std::vector<std::string> settings = {
