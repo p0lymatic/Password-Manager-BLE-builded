@@ -136,13 +136,13 @@ bool UtilityController::handleGeneralSettings() {
             selectedIndex = horizontalSelector.select("Screen Off", timeLabels, "Turn off inactivity", "Press OK to select", {}, false);
             globalState.setInactivityScreenTimeout(timeValues[selectedIndex]);
             nvsService.saveString(globalState.getNvsInactivityScreenTimeout(), timeLabels[selectedIndex]);
-            settings[verticalIndex] = timeLabels[selectedIndex];
+            settings[verticalIndex] = timeLabels[selectedIndex] + "  "; // hack to avoid same values in the vector
 
         } else if (selectedSetting == "Vault lock") {
             selectedIndex = horizontalSelector.select("Vault Lock", timeLabels, "Lock vault inactivity", "Press OK to select", {}, false);
             globalState.setInactivityLockTimeout(timeValues[selectedIndex]);
             nvsService.saveString(globalState.getNvsInactivityLockTimeout(), timeLabels[selectedIndex]);
-            settings[verticalIndex] = timeLabels[selectedIndex];
+            settings[verticalIndex] = timeLabels[selectedIndex] + " ";
         }
     }
 

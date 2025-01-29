@@ -160,7 +160,6 @@ bool VaultController::handleVaultSave() {
 }
 
 bool VaultController::handleVaultLoading() {
-
     // Loading method
     std::vector<ActionEnum> availableActions = {ActionEnum::LoadSdVault};
     std::vector<IconEnum> actionIcons = {IconEnum::SdCard};
@@ -181,7 +180,7 @@ bool VaultController::handleVaultLoading() {
 
 bool VaultController::loadSdVault() {
     display.topBar("SD Card", false, false);
-    display.subMessage("Loading...", 0);
+    display.subMessage("Loading...", 500);
     if (!sdService.begin()) {
         display.subMessage("SD card not found", 2000);
         return false;
@@ -208,7 +207,7 @@ bool VaultController::loadSdVault() {
         display.subMessage("Loading...", 0);
         elementNames = sdService.getCachedDirectoryElements(currentPath);
         if (elementNames.empty()) {
-            display.subMessage("No files or folders found", 1500);
+            display.subMessage("No elements found", 2000);
             currentPath = sdService.getParentDirectory(currentPath);
             continue;
         }
