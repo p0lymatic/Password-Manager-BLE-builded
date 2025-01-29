@@ -395,7 +395,7 @@ void CardputerView::value(std::string label, std::string value) {
     Display->setTextSize(1.6);
     Display->fillRoundRect(38, 95, 20, 15, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
     Display->setTextColor(TEXT_COLOR);
-    Display->setCursor(45, 101);
+    Display->setCursor(43, 103);
     Display->printf("m");
 
     Display->setCursor(66, 102);
@@ -405,7 +405,7 @@ void CardputerView::value(std::string label, std::string value) {
     // Display "OK" button
     Display->fillRoundRect(33, 117, 30, 15, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
     Display->setTextColor(TEXT_COLOR);
-    Display->setCursor(40, 125);
+    Display->setCursor(38, 125);
     Display->printf("ok");
 
     // Display->setTextSize(TEXT_TINY);
