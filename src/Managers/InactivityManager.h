@@ -80,6 +80,7 @@ public:
     void lockVault() {
         globalState.setLoadedVaultPassword("");
         globalState.setLoadedVaultPath("");
+        shutdownScreen();
         isShutdown = true;
         isLocked = true;
     }
