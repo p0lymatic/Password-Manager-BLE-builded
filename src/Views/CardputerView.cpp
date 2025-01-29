@@ -163,6 +163,15 @@ void CardputerView::verticalSelection(
     const std::vector<std::string>& shortcuts,
     bool visibleMention) {
 
+    if (options.empty()) {
+        clearMainView();
+        Display->setTextSize(TEXT_BIG);
+        Display->fillRoundRect(50, 62, 137, 30, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
+        Display->drawRoundRect(50, 62, 137, 30, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
+        Display->drawCenterString("No results", 120, 70);
+        return;
+    }
+
     if (!optionLabels.empty()) {
         verticalSelectionWithLabelsAndShortcuts(options, selectedIndex, visibleRows, optionLabels, shortcuts, visibleMention);
     } else {
