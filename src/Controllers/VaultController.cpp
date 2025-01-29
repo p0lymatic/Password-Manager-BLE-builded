@@ -213,7 +213,7 @@ bool VaultController::loadSdVault() {
             continue;
         }
 
-        uint16_t selectedIndex = verticalSelector.select(currentPath, elementNames, true, true);
+        uint16_t selectedIndex = verticalSelector.select(currentPath, elementNames, true, true, {} ,{}, false, false);
         if (selectedIndex >= elementNames.size()) {
             if (currentPath == "/") {
                 sdService.close(); // return was made at root level

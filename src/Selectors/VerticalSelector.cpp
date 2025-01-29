@@ -6,7 +6,16 @@ VerticalSelector::VerticalSelector(IView& display, IInput& input, InactivityMana
     : display(display), input(input), inactivityManager(inactivityManager) {}
 
 
-int VerticalSelector::select(const std::string& title, const std::vector<std::string>& options, bool subMenu, bool searchBar, const std::vector<std::string>& options2,  const std::vector<std::string>& shortcuts, bool visibleMention) {
+int VerticalSelector::select(
+        const std::string& title, 
+        const std::vector<std::string>& options, 
+        bool subMenu, 
+        bool searchBar, 
+        const std::vector<std::string>& options2,
+        const std::vector<std::string>& shortcuts, 
+        bool visibleMention,
+        bool handleInactivity) 
+{
     int currentIndex = 0;
     int lastIndex = -1;
     int lastQuerySize = 0;
@@ -16,10 +25,10 @@ int VerticalSelector::select(const std::string& title, const std::vector<std::st
     inactivityManager.reset();
 
     while (true) {
-        inactivityManager.update();
-
-        if (inactivityManager.getVaultIsLocked()) {
-            return -1;
+        // Inactivity
+        if (handleInactivity) {
+            inactivityManager.update();
+            if (inactivityManager.getVaultIsLocked()) {return -1;}
         }
 
         // Display the current options and selection
@@ -33,7 +42,7 @@ int VerticalSelector::select(const std::string& title, const std::vector<std::st
         // Capture user input
         key = input.handler();
 
-        if (key != KEY_NONE) {
+        if (handleInactivity && key != KEY_NONE) {
             inactivityManager.reset();
         }
 
