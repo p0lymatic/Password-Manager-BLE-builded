@@ -33,6 +33,7 @@ ActionEnum EntryController::actionFieldSelected(Field field) {
 
 Entry EntryController::handleEntrySelection() {
     auto entries = entryService.getAllEntries();
+    std::reverse(entries.begin(), entries.end()); // last created in first
     auto labels = modelTransformer.toStrings(entries);
     auto selectedIndex = verticalSelector.select(entryService.getVaultName(), labels, true, true);
 
@@ -91,6 +92,7 @@ bool EntryController::handleEntryDeletion() {
 
     while (selectedIndex != 1) {
         auto entries = entryService.getAllEntries();
+        std::reverse(entries.begin(), entries.end()); // last created in first
         auto labels = modelTransformer.toStrings(entries);
         std::vector<std::string> delLabels(labels.size(), "Del");
         auto selectedIndex = verticalSelector.select("Select to remove", labels, true, true, delLabels);
@@ -103,5 +105,9 @@ bool EntryController::handleEntryDeletion() {
         }
     }
 
+    if (entryUpdated) {
+        display.subMessage("Saving...", 0);
+    }
+    
     return entryUpdated;
 }

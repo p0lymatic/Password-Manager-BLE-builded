@@ -132,8 +132,8 @@ void test_handleEntryDeletion() {
     entryService.addEntry(Entry("Gmail", "john", "pass", "note"));
     entryService.addEntry(Entry("Yahoo", "doe", "word", "note2"));
 
-    // Input mock
-    mockInput.enqueueKey(KEY_OK); // Select first entry
+    // Input mock, last entry, first at selection
+    mockInput.enqueueKey(KEY_OK); // Select first entry, in this case Yahoo
     mockInput.enqueueKey(KEY_OK); // Confirm deletion
     mockInput.enqueueKey(KEY_ESC_CUSTOM);
 
@@ -142,7 +142,7 @@ void test_handleEntryDeletion() {
     TEST_ASSERT_TRUE(result);
     auto entries = entryService.getAllEntries();
     TEST_ASSERT_EQUAL(1, entries.size());
-    TEST_ASSERT_EQUAL_STRING("Yahoo", entries[0].getServiceName().c_str());
+    TEST_ASSERT_EQUAL_STRING("Gmail", entries[0].getServiceName().c_str());
 }
 
 #endif // TEST_ENTRY_CONTROLLER
