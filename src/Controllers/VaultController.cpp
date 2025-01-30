@@ -46,10 +46,14 @@ ActionEnum VaultController::actionVaultSelected() {
     auto actionIcons = {IconEnum::SelectEntry, IconEnum::AddEntry, IconEnum::DeleteEntry};
     auto labels = ActionEnumMapper::getActionNames(availableActions);
     auto iconNames = IconEnumMapper::getIconNames(actionIcons);
-    auto selectedIndex = horizontalSelector.select("", labels, "", "", iconNames);
 
-    if (selectedIndex != -1) {
-        return availableActions[selectedIndex];
+    auto confirmation = false;
+    while (!confirmation) {
+        auto selectedIndex = horizontalSelector.select("", labels, "", "", iconNames);
+        if (selectedIndex != -1) {
+            return availableActions[selectedIndex];
+        }
+        confirmation = confirmationSelector.select("Back to Menu", "Close the vault ?");
     }
 
     return ActionEnum::None;
