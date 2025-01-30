@@ -58,6 +58,14 @@ Field EntryController::handleFieldSelection(Entry& selectedEntry) {
 }
 
 bool EntryController::handleEntryCreation() {
+    // Check max saved password
+    auto entryCount = entryService.getAllEntries().size();
+    auto entryLimit = globalState.getMaxSavedPasswordCount();
+    if (entryCount >= entryLimit) {
+        display.subMessage("Can't save more passwords", 2000);
+        return false;
+    }
+
     auto servicerName = stringPromptSelector.select("New Entry", "Enter service name", "", true, false, true);
     if (servicerName.empty()) {
         return false;

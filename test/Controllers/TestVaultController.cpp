@@ -9,6 +9,7 @@
 #include "../src/Services/CryptoService.h"
 #include "../src/Services/SdService.h"
 #include "../src/Transformers/JsonTransformer.h"
+#include "../src/States/GlobalState.h"
 #include "../src/Transformers/ModelTransformer.h"
 #include "../src/Repositories/EntryRepository.h"
 #include "../src/Repositories/CategoryRepository.h"
@@ -171,7 +172,7 @@ void test_handleVaultLoading() {
     // Sélectionner "Load SD Vault"
     mockInput.enqueueKey(KEY_OK);
 
-    // File name in earch box
+    // File name in search box
     mockInput.enqueueKey('U');
     mockInput.enqueueKey('n');
     mockInput.enqueueKey('i');
@@ -209,6 +210,7 @@ void test_handleVaultSave() {
     JsonTransformer jsonTransformer;
     ModelTransformer modelTransformer;
     InactivityManager inactivityManager(mockDisplay);
+    GlobalState& globalState = GlobalState::getInstance();
 
     StringPromptSelector stringPromptSelector(mockDisplay, mockInput);
     VerticalSelector verticalSelector(mockDisplay, mockInput, inactivityManager);
@@ -220,16 +222,57 @@ void test_handleVaultSave() {
                                nvsService, categoryService, entryService, cryptoService,
                                jsonTransformer, modelTransformer);
 
-
     std::vector<Entry> entries = {Entry("Service1", "User1", "Pass1", "Note")};
     std::vector<Category> cats = {Category()};
     entryService.setEntries(entries);
     categoryService.setCategories(cats);
+    globalState.setLoadedVaultPath(globalState.getDefaultVaultPath() + "/UnitTest.vault");
+    globalState.setLoadedVaultPassword("MyPass");
 
     bool result = controller.handleVaultSave();
 
     TEST_ASSERT_TRUE(result);
 }
+
+void test_handleVaultSave_maxEntries() {
+    MockView mockDisplay;
+    MockInput mockInput;
+    NvsService nvsService;
+    SdService sdService;
+    EntryRepository entryRepository;
+    CategoryRepository categoryRepository;
+    EntryService entryService(entryRepository);
+    CategoryService categoryService(categoryRepository);
+    CryptoService cryptoService;
+    JsonTransformer jsonTransformer;
+    ModelTransformer modelTransformer;
+    InactivityManager inactivityManager(mockDisplay);
+    GlobalState& globalState = GlobalState::getInstance();
+
+    StringPromptSelector stringPromptSelector(mockDisplay, mockInput);
+    VerticalSelector verticalSelector(mockDisplay, mockInput, inactivityManager);
+    HorizontalSelector horizontalSelector(mockDisplay, mockInput, inactivityManager);
+    ConfirmationSelector confirmationSelector(mockDisplay, mockInput);
+
+    VaultController controller(mockDisplay, mockInput, horizontalSelector, verticalSelector,
+                               confirmationSelector, stringPromptSelector, sdService,
+                               nvsService, categoryService, entryService, cryptoService,
+                               jsonTransformer, modelTransformer);
+
+    // Récupérer la limite max
+    auto entryLimit = globalState.getMaxSavedPasswordCount();
+    globalState.setLoadedVaultPath(globalState.getDefaultVaultPath() + "/UnitTest.vault");
+    globalState.setLoadedVaultPassword("MyPass");
+    
+    // Remplir jusqu'à la limite
+    for (size_t i = 0; i < entryLimit; i++) {
+        entryService.addEntry(Entry("Service" + std::to_string(i), "username@123456789.com", "password123456789", "a quite long note for all the entries"));
+    }
+    bool result = controller.handleVaultSave();
+
+    TEST_ASSERT_TRUE(result);
+}
+
 
 
 #endif // TEST_VAULT_CONTROLLER

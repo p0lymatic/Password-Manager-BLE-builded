@@ -3,6 +3,7 @@
 #include <unity.h>
 #include "../src/Transformers/JsonTransformer.h"
 #include <vector>
+#include "../src/States/GlobalState.h"
 
 void test_to_json_categories() {
     JsonTransformer transformer;

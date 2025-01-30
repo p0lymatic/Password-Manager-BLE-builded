@@ -15,9 +15,10 @@ private:
     size_t fileCountLimit = 512;
     size_t fileCacheLimit = 64;
 
-    // Char limit
+    // Char and entry limit
     size_t maxInputCharCount = 24;
     size_t maxInputCharPasswordCount = 128;
+    size_t maxSavedPasswords = 100;
 
     // Encryption size
     size_t saltSize = 16;
@@ -79,10 +80,12 @@ public:
     // Accesseurs pour les limites de saisies utilisateur
     size_t getMaxInputCharCount() const { return maxInputCharCount; }
     size_t getMaxInputCharPasswordCount() const { return maxInputCharPasswordCount; }
+    size_t getMaxSavedPasswordCount() const { return maxSavedPasswords; }
 
     // Mutateurs pour les limites de saisies utilisateur
     void setMaxInputCharCount(size_t limit) { maxInputCharCount = limit; }
     void setMaxInputCharPasswordCount(size_t limit) { maxInputCharPasswordCount = limit; }
+    void setMaxSavedPasswordCount(size_t limit) { maxSavedPasswords = limit; }
 
     // Accesseurs pour les tailles de sel et de checksum
     size_t getSaltSize() const { return saltSize; }

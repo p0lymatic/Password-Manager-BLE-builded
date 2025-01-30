@@ -38,6 +38,7 @@ void setup() {
     RUN_TEST(test_update_entry);
     RUN_TEST(test_get_all_entries);
     RUN_TEST(test_updateField);
+    RUN_TEST(test_maxSavedPasswords);
 
     // CategoryService
     RUN_TEST(test_validateCategory);
@@ -131,6 +132,7 @@ void setup() {
     RUN_TEST(test_actionVaultSelected);
     RUN_TEST(test_handleVaultCreation);
     RUN_TEST(test_handleVaultSave);
+    RUN_TEST(test_handleVaultSave_maxEntries);
     RUN_TEST(test_handleVaultLoading);
 
     // EntryController
