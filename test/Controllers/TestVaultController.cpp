@@ -259,12 +259,12 @@ void test_handleVaultSave_maxEntries() {
                                nvsService, categoryService, entryService, cryptoService,
                                jsonTransformer, modelTransformer);
 
-    // Récupérer la limite max
+    // Max entries limit
     auto entryLimit = globalState.getMaxSavedPasswordCount();
     globalState.setLoadedVaultPath(globalState.getDefaultVaultPath() + "/UnitTest.vault");
     globalState.setLoadedVaultPassword("MyPass");
     
-    // Remplir jusqu'à la limite
+    // Full vector of entries
     for (size_t i = 0; i < entryLimit; i++) {
         entryService.addEntry(Entry("Service" + std::to_string(i), "username@123456789.com", "password123456789", "a quite long note for all the entries"));
     }
