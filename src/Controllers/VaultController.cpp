@@ -197,13 +197,18 @@ bool VaultController::loadSdVault() {
     // Explore folder to find a .vault file
     do {
         if (sdService.isFile(currentPath)) {
-            if (sdService.validateVaultFile(currentPath) && loadDataFromEncryptedFile(currentPath)) {
-                display.subMessage("Loaded successfully", 2000);
-                return true;
+            if (sdService.validateVaultFile(currentPath)) {
+                if (loadDataFromEncryptedFile(currentPath)) {
+                    display.subMessage("Loaded successfully", 2000);
+                    return true;
+                } else {
+                    display.subMessage("Invalid Paswword", 2000);    
+                }
             } else {
-                display.subMessage("Invalid Paswword", 2000);
+                display.subMessage("Invalid File", 2000);
             }
-
+            
+            // Not a valid file, revert to directory
             currentPath = sdService.getParentDirectory(currentPath);
             currentPath = currentPath.empty() ? "/" : currentPath;
         }
