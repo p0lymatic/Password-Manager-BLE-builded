@@ -196,6 +196,7 @@ bool VaultController::loadSdVault() {
     
     // Explore folder to find a .vault file
     do {
+        // Current path is a file
         if (sdService.isFile(currentPath)) {
             if (sdService.validateVaultFile(currentPath)) {
                 if (loadDataFromEncryptedFile(currentPath)) {
@@ -213,6 +214,7 @@ bool VaultController::loadSdVault() {
             currentPath = currentPath.empty() ? "/" : currentPath;
         }
         
+        // Load Elements
         display.subMessage("Loading...", 0);
         elementNames = sdService.getCachedDirectoryElements(currentPath);
         if (elementNames.empty()) {
@@ -221,6 +223,7 @@ bool VaultController::loadSdVault() {
             continue;
         }
 
+        // Select Element
         uint16_t selectedIndex = verticalSelector.select(currentPath, elementNames, true, true, {} ,{}, false, false);
         if (selectedIndex >= elementNames.size()) {
             if (currentPath == "/") {
@@ -228,9 +231,8 @@ bool VaultController::loadSdVault() {
                 return false;
             }
             currentPath = sdService.getParentDirectory(currentPath);
-        }
 
-        if (!currentPath.empty() && currentPath.back() != '/') {
+        } else if (!currentPath.empty() && currentPath.back() != '/') {
             currentPath += "/";
         }
 
