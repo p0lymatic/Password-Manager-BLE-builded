@@ -35,6 +35,7 @@ public:
     void initialize() override;
     void setBrightness(uint16_t brightness) override;
     uint8_t getBrightness() override;
+    void welcome();
     void topBar(const std::string& title, bool submenu, bool searchBar) override;
     void horizontalSelection(const std::vector<std::string>& options, uint16_t selectedIndex, const std::string& description1="", const std::string& description2="", const std::vector<std::string>& icons={});
     void verticalSelection(
@@ -50,13 +51,13 @@ public:
     void stringPrompt(std::string label, std::string value, bool backButton, size_t minLength);
     void confirmationPrompt(std::string label);
     void debug(const std::string& message) override;
-    void drawVaultIcon(int x = 86, int y = 10, uint16_t color = PRIMARY_COLOR);
+    void drawVaultIcon(int x = 86, int y = 10, uint16_t color = PRIMARY_COLOR, size_t w=70, size_t h=50);
     void drawFileIcon(int x = 92, int y = 10);
     void drawSettingsIcon(int x = 80, int y = 5);
     void drawSdCardIcon(int x=90, int y=10);
     void drawPlusIcon(int x=120, int y=47, uint16_t color = PRIMARY_COLOR);
     void drawMinusIcon(int x=120, int y=47, uint16_t color = PRIMARY_COLOR);
-    void drawLockIcon(int x=120, int y=78, uint16_t color = PRIMARY_COLOR);
+    void drawLockIcon(int x=120, int y=78, uint16_t color = PRIMARY_COLOR, size_t w=60, size_t h=45);
 private:
     static M5GFX* Display; // Variable statique pour l'affichage
     void drawRect(bool selected, uint8_t margin, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t stepY);

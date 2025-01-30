@@ -8,6 +8,8 @@ ActionDispatcher::ActionDispatcher(DependencyProvider& provider)
 
 void ActionDispatcher::setup() {
     provider.getUtilityController().handleLoadNvs();
+    provider.getView().welcome();
+    provider.getInput().waitPress();
 }
 
 void ActionDispatcher::run() {

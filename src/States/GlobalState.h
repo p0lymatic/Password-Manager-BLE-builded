@@ -42,9 +42,9 @@ private:
     std::string loadedVaultPassword = "";
 
     // Inactivity Timing
-    uint32_t inactivityBrightnessTimeout = 12000;
-    uint32_t inactivityScreenTimeout = 60000;
-    uint32_t inactivityLockTimeout = 600000;
+    uint32_t inactivityBrightnessTimeout = 12000; // 12 sec
+    uint32_t inactivityScreenTimeout = 1 * 60 * 1000;
+    uint32_t inactivityLockTimeout = 10 * 60 * 1000;
 
     // Private constructor
     GlobalState() = default;

@@ -9,8 +9,37 @@ void CardputerView::initialize() {
     Display->setRotation(1);
     Display->setTextColor(TEXT_COLOR);
     Display->fillScreen(BACKGROUND_COLOR);
-    M5Cardputer.Display.setTextDatum(middle_center);
-    M5Cardputer.Display.setFont(&fonts::Font0);
+    Display->setTextDatum(middle_center);
+    Display->setFont(&fonts::Font0);
+}
+
+void CardputerView::welcome() {
+    Display->fillRoundRect(10, 13, 215, 30, 5, RECT_COLOR_DARK); // Around main title
+    Display->drawRoundRect(10, 13, 215, 30, 5, PRIMARY_COLOR); // Around main title
+
+    std::string title = "Password Manager";
+    Display->setTextColor(TEXT_COLOR);
+    Display->setTextSize(2);
+    Display->setCursor(getCenterOffset(title), 28);
+    Display->printf(title.c_str());
+    Display->setTextColor(PRIMARY_COLOR);
+    Display->fillRoundRect(92, 53, 133, ((Display->height() / 2) + 2), DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
+    Display->drawRoundRect(92, 53, 133, ((Display->height() / 2) + 2), DEFAULT_ROUND_RECT, PRIMARY_COLOR);
+    Display->setTextColor(TEXT_COLOR);
+    Display->setTextSize(1.2);
+    Display->setCursor(126, 68);
+    Display->printf("<- Github");
+    Display->setCursor(125, 80);
+    Display->setTextSize(1);
+    Display->printf("1.0 Version");
+    Display->setCursor(126, 92);
+    Display->printf("Made By Geo");
+    Display->setTextColor(PRIMARY_COLOR);
+    Display->setCursor(107, 108);
+    Display->setTextSize(1.4);
+    Display->printf("Press any key");
+    Display->drawRect(12, 53, ((Display->height() / 2) + 2), ((Display->height() / 2) + 2), PRIMARY_COLOR);
+    Display->qrcode("https://github.com/geo-tp/Password-Manager", 13, 54, Display->height() / 2, 4);
 }
 
 void CardputerView::topBar(const std::string& title, bool submenu, bool searchBar) {
@@ -71,9 +100,6 @@ void CardputerView::horizontalSelectionWithIcons(
 
     // Clear
     clearMainView(5);
-
-    // Box frame
-    // Display->drawRoundRect(1, 1, Display->width() - 1, Display->height() - 1, 5, RECT_COLOR_DARK);
 
     // Icon
     if (icons[selectedIndex] == "Create Vault") {
@@ -366,7 +392,6 @@ void CardputerView::confirmationPrompt(std::string label) {
 }
 
 void CardputerView::value(std::string label, std::string value) {
-    // Clear the main view area
     clearMainView(5);
 
     // Initial text size
@@ -395,10 +420,10 @@ void CardputerView::value(std::string label, std::string value) {
     Display->setTextSize(1.6);
     Display->fillRoundRect(38, 95, 20, 15, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
     Display->setTextColor(TEXT_COLOR);
-    Display->setCursor(43, 103);
+    Display->setCursor(45, 102);
     Display->printf("m");
 
-    Display->setCursor(68, 101);
+    Display->setCursor(68, 103);
     Display->setTextColor(PRIMARY_COLOR);
     Display->printf("to modify field");
 
@@ -408,7 +433,6 @@ void CardputerView::value(std::string label, std::string value) {
     Display->setCursor(40, 125);
     Display->printf("ok");
 
-    // Display->setTextSize(TEXT_TINY);
     Display->setCursor(72, 125);
     Display->setTextColor(PRIMARY_COLOR);
     Display->printf("to send via USB");
@@ -479,10 +503,10 @@ int CardputerView::getCenterOffset(const std::string& text, int screenWidth) {
     return (screenWidth - textWidth) / 2;
 }
 
-void CardputerView::drawVaultIcon(int x, int y, uint16_t color) {
+void CardputerView::drawVaultIcon(int x, int y, uint16_t color, size_t w, size_t h) {
     // Taille ajustée de l'icône
-    int width = 70;  // Largeur du coffre
-    int height = 50; // Hauteur de la base
+    int width = w;  // Largeur du coffre
+    int height = h; // Hauteur de la base
     int lidHeight = 20; // Hauteur du couvercle
 
     // Fond de l'icône
@@ -595,10 +619,6 @@ void CardputerView::drawSdCardIcon(int x, int y) {
     // Dessiner le corps principal de la carte SD
     Display->drawRoundRect(x, y, cardWidth, cardHeight, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
 
-    // Ajout d'une ligne pour délimiter la zone des contacts
-    // int contactZoneHeight = 10;
-    // Display->drawLine(x + 5, y + cardHeight - contactZoneHeight - 1, x + cardWidth - 5, y + cardHeight - contactZoneHeight - 1, BACKGROUND_COLOR);
-
     // Dessiner les contacts métalliques
     int contactWidth = 6; // Largeur de chaque contact
     int contactSpacing = 4; // Espacement entre les contacts
@@ -629,10 +649,10 @@ void CardputerView::drawSdCardIcon(int x, int y) {
     }
 }
 
-void CardputerView::drawLockIcon(int x, int y, uint16_t color) {
+void CardputerView::drawLockIcon(int x, int y, uint16_t color, size_t w, size_t h) {
     Display->fillRect(x-10, y, 90, 80, BACKGROUND_COLOR);
-    int lockWidth = 60;     // Largeur du corps du cadenas
-    int lockHeight = 45;    // Hauteur du corps du cadenas
+    int lockWidth = w;     // Largeur du corps du cadenas
+    int lockHeight = h;    // Hauteur du corps du cadenas
     int shackleWidth = 40;  // Largeur de l'anse
     int shackleHeight = 20; // Hauteur de l'anse
     int shackleOffset = 10; // Décalage vertical de l'anse par rapport au corps
@@ -718,9 +738,9 @@ std::string CardputerView::truncateString(const std::string& input, size_t maxLe
 }
 
 void CardputerView::adjustTextSizeToFit(const std::string& text, uint16_t maxWidth, uint8_t& textSize) {
-    // Réduction de la taille du texte tant qu'il dépasse la largeur autorisée
+    // Resize text if bigger than screen
     while (Display->textWidth(text.c_str()) > maxWidth && textSize > TEXT_SMALL) {
-        textSize -= 0.01; // Réduction de la taille du texte
+        textSize -= 0.01;
         Display->setTextSize(textSize);
     }
 }

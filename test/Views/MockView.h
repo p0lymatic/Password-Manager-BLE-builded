@@ -13,6 +13,10 @@ public:
         initialized = true;
     }
 
+    void welcome() override {
+        welcomeCalled = true;
+    }   
+
     void setBrightness(uint16_t brightness) override {
         this->brightness = brightness;
     }
@@ -81,6 +85,7 @@ public:
     size_t visibleRows = 0;
     std::string message;
     std::string debugMessage;
+    bool welcomeCalled = false;
     bool topBarCalled = false;
     bool verticalSelectionCalled = false;
     bool horizontalSelectionCalled = false;
