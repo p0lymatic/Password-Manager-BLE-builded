@@ -4,6 +4,7 @@
 #include <unity.h>
 #include "../src/Controllers/EntryController.h"
 #include "../src/Services/EntryService.h"
+#include "../src/Services/CryptoService.h"
 #include "../src/Repositories/EntryRepository.h"
 #include "../src/Transformers/ModelTransformer.h"
 #include "../src/Selectors/StringPromptSelector.h"
@@ -26,7 +27,7 @@ void test_handleEntryCreation() {
     NvsService nvsService;
     ModelTransformer modelTransformer;
     InactivityManager inactivityManager(mockDisplay);
-
+    CryptoService cryptoService;
     StringPromptSelector stringPromptSelector(mockDisplay, mockInput);
     VerticalSelector verticalSelector(mockDisplay, mockInput, inactivityManager);
     HorizontalSelector horizontalSelector(mockDisplay, mockInput, inactivityManager);
@@ -35,7 +36,7 @@ void test_handleEntryCreation() {
 
     EntryController controller(mockDisplay, mockInput, horizontalSelector, verticalSelector,
                                fieldActionSelector, confirmationSelector, stringPromptSelector,
-                               entryService, usbService, ledService, nvsService, modelTransformer);
+                               entryService, cryptoService, usbService, ledService, nvsService, modelTransformer);
 
     // User input mock
     mockInput.enqueueKey('G');
@@ -44,11 +45,13 @@ void test_handleEntryCreation() {
     mockInput.enqueueKey('i');
     mockInput.enqueueKey('l');
     mockInput.enqueueKey(KEY_OK); // Service name
+    mockInput.enqueueKey(KEY_DEL); // Del last used user if any
     mockInput.enqueueKey('j');
     mockInput.enqueueKey('o');
     mockInput.enqueueKey('h');
     mockInput.enqueueKey('n');
     mockInput.enqueueKey(KEY_OK); // Username
+    mockInput.enqueueKey(KEY_DEL); // Del random password
     mockInput.enqueueKey('p');
     mockInput.enqueueKey('a');
     mockInput.enqueueKey('s');
@@ -76,6 +79,7 @@ void test_handleEntryUpdate() {
     MockInput mockInput;
     EntryRepository entryRepository;
     EntryService entryService(entryRepository);
+    CryptoService cryptoService;
     UsbService usbService;
     LedService ledService;
     NvsService nvsService;
@@ -90,7 +94,7 @@ void test_handleEntryUpdate() {
 
     EntryController controller(mockDisplay, mockInput, horizontalSelector, verticalSelector,
                                fieldActionSelector, confirmationSelector, stringPromptSelector,
-                               entryService, usbService, ledService, nvsService, modelTransformer);
+                               entryService, cryptoService, usbService, ledService, nvsService, modelTransformer);
 
     // Add Entry
     Entry entry("Gmail", "john", "pass", "note");
@@ -113,6 +117,7 @@ void test_handleEntryDeletion() {
     MockInput mockInput;
     EntryRepository entryRepository;
     EntryService entryService(entryRepository);
+    CryptoService cryptoService;
     UsbService usbService;
     LedService ledService;
     NvsService nvsService;
@@ -127,7 +132,7 @@ void test_handleEntryDeletion() {
 
     EntryController controller(mockDisplay, mockInput, horizontalSelector, verticalSelector,
                                fieldActionSelector, confirmationSelector, stringPromptSelector,
-                               entryService, usbService, ledService, nvsService, modelTransformer);
+                               entryService, cryptoService, usbService, ledService, nvsService, modelTransformer);
 
     // Add 2 entries
     entryService.addEntry(Entry("Gmail", "john", "pass", "note"));
@@ -151,6 +156,7 @@ void test_maxSavedPasswords() {
     MockInput mockInput;
     EntryRepository entryRepository;
     EntryService entryService(entryRepository);
+    CryptoService cryptoService;
     UsbService usbService;
     LedService ledService;
     NvsService nvsService;
@@ -166,7 +172,7 @@ void test_maxSavedPasswords() {
 
     EntryController controller(mockDisplay, mockInput, horizontalSelector, verticalSelector,
                                fieldActionSelector, confirmationSelector, stringPromptSelector,
-                               entryService, usbService, ledService, nvsService, modelTransformer);
+                               entryService, cryptoService, usbService, ledService, nvsService, modelTransformer);
 
     // Récupérer la limite max
     auto entryLimit = globalState.getMaxSavedPasswordCount();
