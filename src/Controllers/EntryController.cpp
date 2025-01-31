@@ -84,7 +84,7 @@ bool EntryController::handleEntryCreation() {
         }
     }
 
-    auto randomPassword = cryptoService.generateRandomString(18);
+    auto randomPassword = cryptoService.generateRandomString(20);
     auto username = stringPromptSelector.select("Username or Email", "Enter username", lastUsername, false, true, false, 3, true);
     auto password = stringPromptSelector.select("Account Password", "Enter password", randomPassword, false, true, false, 3, true);
     auto notes = stringPromptSelector.select("Notes (Optionnal)", "Enter notes (OK to pass)", "", false, true, false, 0);
