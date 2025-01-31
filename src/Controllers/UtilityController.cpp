@@ -25,6 +25,13 @@ UtilityController::UtilityController(IView& display,
       sdService(sdService),
       timeTransformer(timeTransformer) {}
 
+void UtilityController::handleWelcome() {
+    auto brightness = globalState.getSelectedScreenBrightness();
+    display.welcome(brightness);
+    input.waitPress();
+    display.setBrightness(brightness);
+}
+
 bool UtilityController::handleUsbTyping(std::string sendString) {
     ledService.showLed();
     display.subMessage("Send Value", 0);

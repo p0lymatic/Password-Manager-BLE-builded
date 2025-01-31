@@ -10,7 +10,7 @@ public:
     virtual ~IView() = default;
 
     virtual void initialize() = 0;
-    virtual void welcome() = 0;
+    virtual void welcome(uint8_t defaultBrightness=100) = 0;
     virtual void setBrightness(uint16_t brightness) = 0;
     virtual uint8_t getBrightness() = 0;
     virtual void topBar(const std::string& title, bool submenu, bool searchBar) = 0;

@@ -35,7 +35,7 @@ public:
     void initialize() override;
     void setBrightness(uint16_t brightness) override;
     uint8_t getBrightness() override;
-    void welcome();
+    void welcome(uint8_t defaultBrightness=140);
     void topBar(const std::string& title, bool submenu, bool searchBar) override;
     void horizontalSelection(const std::vector<std::string>& options, uint16_t selectedIndex, const std::string& description1="", const std::string& description2="", const std::vector<std::string>& icons={});
     void verticalSelection(

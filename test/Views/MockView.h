@@ -13,7 +13,7 @@ public:
         initialized = true;
     }
 
-    void welcome() override {
+    void welcome(uint8_t defaultBrightness) override {
         welcomeCalled = true;
     }   
 

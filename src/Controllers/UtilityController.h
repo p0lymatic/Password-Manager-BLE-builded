@@ -38,6 +38,7 @@ public:
     bool handleKeyboardInitialization();
     bool handleGeneralSettings();
     void handleLoadNvs();
+    void handleWelcome();
 
 private:
     IView& display;

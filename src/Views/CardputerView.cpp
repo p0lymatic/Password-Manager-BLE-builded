@@ -13,7 +13,7 @@ void CardputerView::initialize() {
     Display->setFont(&fonts::Font0);
 }
 
-void CardputerView::welcome() {
+void CardputerView::welcome(uint8_t defaultBrightness) {
     Display->fillRoundRect(10, 13, 215, 30, 5, RECT_COLOR_DARK); // Around main title
     Display->drawRoundRect(10, 13, 215, 30, 5, PRIMARY_COLOR); // Around main title
 
@@ -40,6 +40,12 @@ void CardputerView::welcome() {
     Display->printf("Press any key");
     Display->drawRect(12, 53, ((Display->height() / 2) + 2), ((Display->height() / 2) + 2), PRIMARY_COLOR);
     Display->qrcode("github.com/geo-tp/Password-Manager", 13, 54, Display->height() / 2, 4);
+
+    uint8_t currentBrightness = defaultBrightness;
+    while (getBrightness() >= 50) {
+        setBrightness(currentBrightness--);
+        delay(12);
+    }
 }
 
 void CardputerView::topBar(const std::string& title, bool submenu, bool searchBar) {
