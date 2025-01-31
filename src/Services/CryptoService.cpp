@@ -7,6 +7,33 @@
 
 CryptoService::CryptoService() {}
 
+std::vector<uint8_t> CryptoService::generateHardwareRandom(size_t size) {
+    // Get entropy from esp32 HRNG
+    std::vector<uint8_t> randomData(size);
+    bootloader_random_enable();
+    esp_fill_random(randomData.data(), randomData.size());
+    bootloader_random_disable();
+    
+    return randomData;
+}
+
+std::string CryptoService::getRandomString(size_t length) {
+    const std::string PRINTABLE_CHARACTERS =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz"
+        "0123456789"
+        "!@#$^&*()-_=+[]{}|,.<>?/";
+
+    auto randomData = generateHardwareRandom(length);
+    std::string randomString;
+
+    for (size_t i = 0; i < length; i++) {
+        randomString += PRINTABLE_CHARACTERS[randomData[i] % PRINTABLE_CHARACTERS.size()];
+    }
+
+    return randomString;
+}
+
 std::vector<uint8_t> CryptoService::deriveKeyFromPassphrase(const std::string& passphrase, const std::string& salt, size_t keySize) {
     std::vector<uint8_t> key(keySize);
 

@@ -29,6 +29,8 @@ public:
     // Utility
     std::vector<uint8_t> generateChecksum(const std::string& data, size_t size);
     std::vector<uint8_t> generateSalt(size_t saltSize);
+    std::vector<uint8_t> generateHardwareRandom(size_t size);
+    std::string getRandomString(size_t length);
 };
 
 #endif // CRYPTO_SERVICE_H
