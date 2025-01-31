@@ -38,7 +38,6 @@ bool UtilityController::handleKeyboardInitialization() {
     const uint8_t* finalLayout = KeyboardLayoutMapper::toLayout(selectedKeyboardLayout);
     auto nvsKeyboardLayoutField = globalState.getNvsKeyboardLayout();
     int selectedIndex;
-    nvsService.saveString(nvsKeyboardLayoutField, "");
 
     if (selectedKeyboardLayout.empty()) {
         selectedKeyboardLayout = nvsService.getString(nvsKeyboardLayoutField);
