@@ -26,8 +26,10 @@ UtilityController::UtilityController(IView& display,
       timeTransformer(timeTransformer) {}
 
 bool UtilityController::handleUsbTyping(std::string sendString) {
+    ledService.showLed();
     display.subMessage("Send Value", 0);
     usbService.sendString(sendString);
+    ledService.clearLed();
     return true;
 }
 
