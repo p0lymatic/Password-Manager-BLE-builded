@@ -90,6 +90,7 @@ bool VaultController::handleVaultCreation() {
     vault.setSalt(salt);
     vault.setChecksum(checksum);
     vault.setEncryptedData(jsonEncrypted);
+    entryService.setContainerName(vaultName);
 
     // Save to SD card
     sdService.begin();
