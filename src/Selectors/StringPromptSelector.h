@@ -13,7 +13,7 @@ class StringPromptSelector {
 public:
     StringPromptSelector(IView& display, IInput& input);
 
-    std::string select(const std::string& title, const std::string& label, const std::string& value = "", bool backButton = true, bool maxInput = false, bool isalnumOnly=false, size_t minLength=3);
+    std::string select(const std::string& title, const std::string& label, const std::string& value = "", bool backButton = true, bool maxInput = false, bool isalnumOnly=false, size_t minLength=3, bool autoDelete=false);
 
 private:
     IView& display;

@@ -3,7 +3,16 @@
 StringPromptSelector::StringPromptSelector(IView& display, IInput& input)
     : display(display), input(input) {}
 
-std::string StringPromptSelector::select(const std::string& title, const std::string& label, const std::string& value, bool backButton, bool maxInput, bool isalnumOnly, size_t minLength) {
+std::string StringPromptSelector::select(
+    const std::string& title, 
+    const std::string& label, 
+    const std::string& value, 
+    bool backButton, 
+    bool maxInput, 
+    bool isalnumOnly, 
+    size_t minLength, 
+    bool autoDelete
+) {
     std::string output = value;
     char key = KEY_NONE;
     size_t limit = getMaxInputLimit(maxInput);
@@ -21,10 +30,16 @@ std::string StringPromptSelector::select(const std::string& title, const std::st
             return ""; // return
         }
         if (key == KEY_DEL && !output.empty()) {
-            output.pop_back();
+            if (autoDelete) {
+                output = "";
+                autoDelete = false;
+            } else {
+                output.pop_back();
+            }
         }
         else if ((isalnumOnly ? std::isalnum(key) : std::isprint(key)) && output.size() < limit) {
             output += key;
+            autoDelete = false;
         }
 
         if (key != KEY_NONE) {
