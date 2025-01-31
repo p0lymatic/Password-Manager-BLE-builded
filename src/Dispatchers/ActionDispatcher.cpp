@@ -7,6 +7,7 @@ ActionDispatcher::ActionDispatcher(DependencyProvider& provider)
       selectedField() {}
 
 void ActionDispatcher::setup() {
+    provider.getUtilityController().handleLoadNvs();
     provider.getUtilityController().handleWelcome();
 }
 
