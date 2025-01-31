@@ -380,14 +380,14 @@ void CardputerView::confirmationPrompt(std::string label) {
     Display->setTextSize(TEXT_MEDIUM);
 
     // < button
-    Display->fillRoundRect(68, 85, 40, 20, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
-    Display->drawRoundRect(68, 85, 40, 20, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
-    Display->setCursor(85, 96);
+    Display->fillRoundRect(65, 85, 40, 20, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
+    Display->drawRoundRect(65, 85, 40, 20, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
+    Display->setCursor(81, 96);
     Display->printf("<");
 
     // ok button
-    Display->fillRoundRect(131, 85, 40, 20, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
-    Display->setCursor(146, 96);
+    Display->fillRoundRect(128, 85, 40, 20, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
+    Display->setCursor(142, 96);
     Display->printf("OK");
 }
 
