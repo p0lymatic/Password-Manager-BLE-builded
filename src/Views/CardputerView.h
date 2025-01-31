@@ -67,7 +67,7 @@ private:
     void clearTopBar();
     int getCenterOffset(const std::string& text, int screenWidth=240);
     std::string truncateString(const std::string& input, size_t maxLength);
-    void adjustTextSizeToFit(const std::string& text, uint16_t maxWidth, uint8_t& textSize);
+    void adjustTextSizeToFit(const std::string& text, uint16_t maxWidth, float textSize);
     void horizontalSelectionWithIcons(
         const std::vector<std::string>& options,
         uint16_t selectedIndex,

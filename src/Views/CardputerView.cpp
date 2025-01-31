@@ -395,10 +395,10 @@ void CardputerView::value(std::string label, std::string value) {
     clearMainView(5);
 
     // Initial text size
-    uint8_t textSize = TEXT_BIG;
+    float textSize = TEXT_BIG;
 
     // Adjust text size to fit the screen width
-    adjustTextSizeToFit(value, Display->width() - 20, textSize);
+    adjustTextSizeToFit(value, Display->width() - 40, textSize);
 
     // Determine position
     auto x = getCenterOffset(value);
@@ -408,8 +408,8 @@ void CardputerView::value(std::string label, std::string value) {
     // Draw background if the text fits on the screen
     if (!biggerThanScreen) {
         y = 60;
-        Display->fillRoundRect(x - 13, y - 15, Display->textWidth(value.c_str()) + 25, 32, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
-        Display->drawRoundRect(x - 13, y - 15, Display->textWidth(value.c_str()) + 25, 32, DEFAULT_ROUND_RECT, RECT_COLOR_LIGHT);
+        Display->fillRoundRect(x - 9, y - 15, Display->textWidth(value.c_str()) + 18, 32, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
+        Display->drawRoundRect(x - 9, y - 15, Display->textWidth(value.c_str()) + 18, 32, DEFAULT_ROUND_RECT, RECT_COLOR_LIGHT);
     }
 
     Display->setCursor(x, y);
@@ -737,10 +737,11 @@ std::string CardputerView::truncateString(const std::string& input, size_t maxLe
     return firstPart + ellipsis + secondPart;
 }
 
-void CardputerView::adjustTextSizeToFit(const std::string& text, uint16_t maxWidth, uint8_t& textSize) {
-    // Resize text if bigger than screen
-    while (Display->textWidth(text.c_str()) > maxWidth && textSize > TEXT_SMALL) {
-        textSize -= 0.01;
+void CardputerView::adjustTextSizeToFit(const std::string& text, uint16_t maxWidth, float textSize) {
+    Display->setTextSize(textSize);
+    
+    while (Display->textWidth(text.c_str()) > maxWidth && textSize > TEXT_WIDE) {
+        textSize-= 0.01; // Réduit progressivement la taille du texte
         Display->setTextSize(textSize);
     }
 }
