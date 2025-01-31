@@ -66,7 +66,7 @@ bool EntryController::handleEntryCreation() {
         return false;
     }
 
-    auto servicerName = stringPromptSelector.select("New Entry", "Enter service name", "", true, false, true);
+    auto servicerName = stringPromptSelector.select("Create a new Entry", "Enter service name", "", true, false, true);
     if (servicerName.empty()) {
         return false;
     }

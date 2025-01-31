@@ -50,15 +50,13 @@ void CardputerView::topBar(const std::string& title, bool submenu, bool searchBa
     float sizeText; // pixels offset depending on text size
 
     clearTopBar();
+    Display->setTextSize(TEXT_MEDIUM);
 
     if (submenu) {
         drawSubMenuReturn(marginX+3, marginY); // for return <
         limiter = 20; // limit string size
-        sizeText = 5.1; // pixels offset for each char
     } else {
-        Display->setTextSize(TEXT_LARGE);
         limiter = 16;
-        sizeText = 6.95;
     }
     
     if (searchBar) {
@@ -72,10 +70,11 @@ void CardputerView::topBar(const std::string& title, bool submenu, bool searchBa
         Display->printf(searchQuery.c_str());
     } else {
         Display->setTextColor(TEXT_COLOR);
-        Display->setTextSize(TEXT_BIG);
-        offsetX = getCenterOffset(title, Display->width());
+        Display->setTextSize(TEXT_WIDE);
+        auto truncatedTitle = truncateString(title, 22);
+        offsetX = getCenterOffset(truncatedTitle, Display->width());
         Display->setCursor(offsetX, marginY);
-        Display->printf(title.c_str());
+        Display->printf(truncatedTitle.c_str());
     }
 }
 
@@ -370,13 +369,14 @@ void CardputerView::confirmationPrompt(std::string label) {
     clearMainView(5);
 
     // Box frame
-    Display->drawRoundRect(10, 35, Display->width() - 20, 90, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
+    Display->drawRoundRect(8, 35, Display->width() - 20, 90, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
 
     // Description
-    Display->setTextSize(TEXT_MEDIUM);
+    Display->setTextSize(TEXT_WIDE);
     Display->setTextColor(TEXT_COLOR);
-    Display->setCursor(getCenterOffset(label), 62);
-    Display->printf(label.c_str());
+    auto truncatedLabel= truncateString(label, 24);
+    Display->setCursor(getCenterOffset(truncatedLabel), 62);
+    Display->printf(truncatedLabel.c_str());
     Display->setTextSize(TEXT_MEDIUM);
 
     // < button

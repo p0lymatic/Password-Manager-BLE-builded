@@ -53,7 +53,7 @@ ActionEnum VaultController::actionVaultSelected() {
         if (selectedIndex != -1) {
             return availableActions[selectedIndex];
         }
-        confirmation = confirmationSelector.select("Back to Menu", "Close the vault ?");
+        confirmation = confirmationSelector.select("Back to the Menu", "Close the vault ?");
     }
 
     return ActionEnum::None;
@@ -62,7 +62,7 @@ ActionEnum VaultController::actionVaultSelected() {
 
 bool VaultController::handleVaultCreation() {
     // Get a vault name
-    auto vaultName = stringPromptSelector.select("New Vault", "Enter the vault name", "", true, false, true);
+    auto vaultName = stringPromptSelector.select("Create a new vault", "Enter the vault name", "", true, false, true);
     if (vaultName.empty()) {
         return false; // back button hits
     }
@@ -185,7 +185,7 @@ bool VaultController::handleVaultLoading() {
 }
 
 bool VaultController::loadSdVault() {
-    display.topBar("SD Card", false, false);
+    display.topBar("Load the SD card", false, false);
     display.subMessage("Loading...", 500);
     if (!sdService.begin()) {
         display.subMessage("SD card not found", 2000);
@@ -245,7 +245,7 @@ bool VaultController::loadSdVault() {
 bool VaultController::loadDataFromEncryptedFile(std::string path) {
     auto vaultBinary = sdService.readBinaryFile(path);
     VaultFile vaultFile = VaultFile(path, vaultBinary);
-    auto password = stringPromptSelector.select("Open Vault", "Enter the password", "", false, false, false);
+    auto password = stringPromptSelector.select("Open encrypted vault", "Enter the password", "", false, false, false);
     display.subMessage("Loading...", 0);
     auto salt = vaultFile.getSalt();
     auto savedChecksum = vaultFile.getChecksum();
