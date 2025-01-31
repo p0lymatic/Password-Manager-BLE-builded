@@ -78,6 +78,7 @@ bool VaultController::handleVaultCreation() {
     
 
     // Encrypt empty json struct
+    display.subMessage("Creating vault...", 0);
     auto salt = cryptoService.generateSalt(globalState.getSaltSize());
     auto jsonEmpty = jsonTransformer.emptyJsonStructure();
     auto checksum = cryptoService.generateChecksum(jsonEmpty, globalState.getChecksumSize());

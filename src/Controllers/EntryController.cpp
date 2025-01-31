@@ -78,7 +78,7 @@ bool EntryController::handleEntryCreation() {
 
     auto entry = Entry(servicerName, username, password, notes);
     entryService.addEntry(entry);
-    display.subMessage("successfully created", 1000);
+    display.subMessage("Successfully created", 1000);
     return true;
 }
 
