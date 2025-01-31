@@ -22,7 +22,7 @@ std::string CryptoService::generateRandomString(size_t length) {
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz"
         "0123456789"
-        "!@#$&*-_=+?/";
+        "!@#$&*-_=+";
 
     auto randomData = generateHardwareRandom(length);
     std::string randomString;
