@@ -197,8 +197,8 @@ void CardputerView::verticalSelection(
     if (options.empty()) {
         clearMainView();
         Display->setTextSize(TEXT_BIG);
-        Display->fillRoundRect(50, 62, 137, 30, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
-        Display->drawRoundRect(50, 62, 137, 30, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
+        Display->fillRoundRect(48, 59, 142, 36, DEFAULT_ROUND_RECT, RECT_COLOR_DARK);
+        Display->drawRoundRect(48, 59, 142, 36, DEFAULT_ROUND_RECT, PRIMARY_COLOR);
         Display->drawCenterString("No results", 120, 70);
         return;
     }
