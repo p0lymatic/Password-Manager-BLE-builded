@@ -93,6 +93,7 @@ bool EntryController::handleEntryCreation() {
     auto entry = Entry(servicerName, username, password, notes);
     entryService.addEntry(entry);
     globalState.setLastUsedUsername(username);
+    display.topBar("Password added", false, false);
     display.subMessage("Successfully created", 1000);
     return true;
 }
