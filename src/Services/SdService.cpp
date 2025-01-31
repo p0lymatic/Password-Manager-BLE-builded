@@ -210,7 +210,7 @@ std::string SdService::getFileName(const std::string& path) {
     size_t lastSlash = path.find_last_of('/');
     size_t lastDot = path.find_last_of('.');
     if (lastDot == std::string::npos || lastDot < lastSlash) {
-        lastDot = path.length(); // Pas d'extension, prendre la fin du chemin
+        lastDot = path.length(); // Not ext, get end of path
     }
     size_t start = (lastSlash != std::string::npos) ? lastSlash + 1 : 0;
     return path.substr(start, lastDot - start);
@@ -218,11 +218,11 @@ std::string SdService::getFileName(const std::string& path) {
 
 bool SdService::ensureDirectory(const std::string& directory) {
     if (!sdCardMounted) {
-        return false; // La carte SD n'est pas montée
+        return false;
     }
 
     if (!SD.exists(directory.c_str())) {
-        return SD.mkdir(directory.c_str()); // Crée le dossier s'il n'existe pas
+        return SD.mkdir(directory.c_str()); // Create forlder
     }
-    return true; // Le dossier existe déjà
+    return true; // Folder already exists
 }

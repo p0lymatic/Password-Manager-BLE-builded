@@ -4,6 +4,45 @@
 #include <unity.h>
 #include "../src/Services/CryptoService.h"
 
+void test_generateHardwareRandom() {
+    CryptoService service;
+    size_t size = 16;
+
+    auto randomData = service.generateHardwareRandom(size);
+
+    TEST_ASSERT_EQUAL(size, randomData.size());
+
+    // Verify randomness
+    bool hasVariety = false;
+    for (size_t i = 1; i < randomData.size(); ++i) {
+        if (randomData[i] != randomData[0]) {
+            hasVariety = true;
+            break;
+        }
+    }
+
+    TEST_ASSERT_TRUE_MESSAGE(hasVariety, "Hardware random data lacks variety.");
+}
+
+void test_generateRandomString() {
+    CryptoService service;
+    size_t length = 18;
+    const std::string PRINTABLE_CHARACTERS =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz"
+        "0123456789"
+        "!@#$&*-_=+";
+
+    auto randomString = service.generateRandomString(length);
+
+    TEST_ASSERT_EQUAL(length, randomString.size());
+
+    // Verify each chars members of PRINTABLE_CHARACTERS
+    for (char c : randomString) {
+        TEST_ASSERT_NOT_EQUAL(std::string::npos, PRINTABLE_CHARACTERS.find(c));
+    }
+}
+
 void test_deriveKeyFromPassphrase() {
     CryptoService service;
     std::string passphrase = "strongpassword";

@@ -26,6 +26,8 @@ void setup() {
     UNITY_BEGIN();
 
     // CryptoService
+    RUN_TEST(test_generateRandomString);
+    RUN_TEST(test_generateHardwareRandom);
     RUN_TEST(test_deriveKeyFromPassphrase);
     RUN_TEST(test_encrypt_decrypt_AES);
     RUN_TEST(test_encrypt_decrypt_with_passphrase);
