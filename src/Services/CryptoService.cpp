@@ -17,7 +17,7 @@ std::vector<uint8_t> CryptoService::generateHardwareRandom(size_t size) {
     return randomData;
 }
 
-std::string CryptoService::getRandomString(size_t length) {
+std::string CryptoService::generateRandomString(size_t length) {
     const std::string PRINTABLE_CHARACTERS =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz"
