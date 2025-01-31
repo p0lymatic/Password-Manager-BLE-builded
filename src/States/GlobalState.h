@@ -41,6 +41,9 @@ private:
     std::string loadedVaultPath = "";
     std::string loadedVaultPassword = "";
 
+    // Last Entry username
+    std::string lastUsedUsername = "";
+
     // Inactivity Timing
     uint32_t inactivityBrightnessTimeout = 12000; // 12 sec
     uint32_t inactivityScreenTimeout = 1 * 60 * 1000;
@@ -134,10 +137,17 @@ public:
     uint32_t getInactivityScreenTimeout() const { return inactivityScreenTimeout; }
     uint32_t getInactivityLockTimeout() const { return inactivityLockTimeout; }
 
-    // Mutateur Inactivity
+    // Mutateurs pour inactivity
     void setInactivityBrightnessTimeout(size_t timeout) { inactivityBrightnessTimeout = timeout; }
     void setInactivityScreenTimeout(size_t timeout) { inactivityScreenTimeout = timeout; }
     void setInactivityLockTimeout(size_t timeout) { inactivityLockTimeout = timeout; }
+
+    // Accesseurs pour le dernier identifiant entry
+    const std::string& getLastUsedUsername() const { return lastUsedUsername; }
+    
+    // Mutateurs pour le dernier identifiant entry
+    void setLastUsedUsername(const std::string& username) { lastUsedUsername = username; }
+
 };
 
 #endif // GLOBAL_STATE_H
