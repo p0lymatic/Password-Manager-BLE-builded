@@ -7,6 +7,7 @@
 #include <Selectors/StringPromptSelector.h>
 #include <Selectors/ConfirmationSelector.h>
 #include <Services/EntryService.h>
+#include <Services/CryptoService.h>
 #include <Services/UsbService.h>
 #include <Services/LedService.h>
 #include <Services/NvsService.h>
@@ -30,6 +31,7 @@ public:
                     ConfirmationSelector& confirmationSelector,
                     StringPromptSelector& stringPromptSelector,
                     EntryService& entryService,
+                    CryptoService& cryptoService,
                     UsbService& usbService,
                     LedService& ledService,
                     NvsService& nvsService,
@@ -53,6 +55,7 @@ private:
     ConfirmationSelector& confirmationSelector;
     StringPromptSelector& stringPromptSelector;
     EntryService& entryService;
+    CryptoService& cryptoService;
     UsbService& usbService;
     LedService& ledService;
     NvsService& nvsService;

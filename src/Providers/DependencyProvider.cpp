@@ -25,8 +25,8 @@ DependencyProvider::DependencyProvider(IView& view, IInput& input)
                       nvsService, categoryService, entryService, cryptoService, 
                       jsonTransformer, modelTransformer),
       entryController(view, input, horizontalSelector, verticalSelector, fieldActionSelector,
-                      confirmationSelector, stringPromptSelector, entryService, usbService, 
-                      ledService, nvsService, modelTransformer),
+                      confirmationSelector, stringPromptSelector, entryService, cryptoService, 
+                      usbService, ledService, nvsService, modelTransformer),
       utilityController(view, input, horizontalSelector, verticalSelector,  fieldEditorSelector, 
                         stringPromptSelector, confirmationSelector, usbService, ledService, nvsService,
                         sdService, timeTransformer)

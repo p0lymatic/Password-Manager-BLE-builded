@@ -8,6 +8,7 @@ EntryController::EntryController(IView& display,
                                  ConfirmationSelector& confirmationSelector,
                                  StringPromptSelector& stringPromptSelector,
                                  EntryService& entryService,
+                                 CryptoService& cryptoService,
                                  UsbService& usbService,
                                  LedService& ledService,
                                  NvsService& nvsService,
@@ -20,6 +21,7 @@ EntryController::EntryController(IView& display,
       confirmationSelector(confirmationSelector),
       stringPromptSelector(stringPromptSelector),
       entryService(entryService),
+      cryptoService(cryptoService),
       usbService(usbService),
       ledService(ledService),
       nvsService(nvsService),
@@ -71,13 +73,26 @@ bool EntryController::handleEntryCreation() {
         return false;
     }
 
-    auto username = stringPromptSelector.select("Username", "Enter username", "", false, true, false);
-    auto password = stringPromptSelector.select("Password", "Enter password", "", false, true, false);
-    auto notes = stringPromptSelector.select("Notes", "Enter notes (OK to pass)", "", false, true, false, 0);
+    // Get the last used username
+    auto lastUsername = globalState.getLastUsedUsername();
+    if (lastUsername.empty()) {
+        auto entries = entryService.getAllEntries();
+
+        if (!entries.empty()) {
+            std::reverse(entries.begin(), entries.end()); // last created in first
+            lastUsername = entries[0].getUsername();
+        }
+    }
+
+    auto randomPassword = cryptoService.getRandomString(18);
+    auto username = stringPromptSelector.select("Username or Email", "Enter username", lastUsername, false, true, false, 3, true);
+    auto password = stringPromptSelector.select("Account Password", "Enter password", randomPassword, false, true, false, 3, true);
+    auto notes = stringPromptSelector.select("Notes (Optionnal)", "Enter notes (OK to pass)", "", false, true, false, 0);
     notes = notes.empty() ? "No notes" : notes;
 
     auto entry = Entry(servicerName, username, password, notes);
     entryService.addEntry(entry);
+    globalState.setLastUsedUsername(username);
     display.subMessage("Successfully created", 1000);
     return true;
 }
@@ -90,7 +105,10 @@ bool EntryController::handleEntryUpdate(Entry& entry, Field& field) {
 
     field.setValue(value);
     entryService.updateField(entry, field);
-    display.subMessage("Field updated", 1000);
+    display.subMessage("Field updated", 500);
+    if (field.getLabel() == "User") {
+        globalState.setLastUsedUsername(field.getValue());
+    }
     return true;
 }
 
