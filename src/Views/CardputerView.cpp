@@ -39,7 +39,7 @@ void CardputerView::welcome() {
     Display->setTextSize(1.4);
     Display->printf("Press any key");
     Display->drawRect(12, 53, ((Display->height() / 2) + 2), ((Display->height() / 2) + 2), PRIMARY_COLOR);
-    Display->qrcode("https://github.com/geo-tp/Password-Manager", 13, 54, Display->height() / 2, 4);
+    Display->qrcode("github.com/geo-tp/Password-Manager", 13, 54, Display->height() / 2, 4);
 }
 
 void CardputerView::topBar(const std::string& title, bool submenu, bool searchBar) {
