@@ -21,6 +21,7 @@ private:
     USBHIDKeyboard keyboard;
     const uint8_t* layout;
     bool initialized = false;
+    uint32_t initTime;
 };
 
 #endif // USBSERVICE_H

@@ -1,7 +1,7 @@
 #include "UsbService.h"
 
 UsbService::UsbService() 
-    : keyboard(), layout(KeyboardLayout_en_US) {}
+    : keyboard(), layout(KeyboardLayout_en_US), initialized(false), initTime(0) {}
 
 void UsbService::setLayout(const uint8_t* newLayout) {
     layout = newLayout;
@@ -12,6 +12,7 @@ void UsbService::begin() {
         USB.begin();
         keyboard.begin(layout);
         initialized = true;
+        initTime = millis(); // HID needs approx 1.5sec to initialize
     }
 }
 
@@ -19,12 +20,15 @@ void UsbService::end() {
     keyboard.end();
 }
 
-// USB Keyboard send string
 void UsbService::sendString(const std::string& text) {
+    // We wait for 1.5sec
+    while (millis() - initTime < 1500) {
+        delay(10);
+    }
+    
     keyboard.releaseAll();
-
     for (const char& c : text) {
-        auto sent = keyboard.write(c);
+        keyboard.write(c);
     }
 }
 
@@ -40,13 +44,9 @@ void UsbService::sendChunkedString(const std::string& data, size_t chunkSize, un
         size_t remainingLength = totalLength - sentLength;
         size_t currentChunkSize = (remainingLength > chunkSize) ? chunkSize : remainingLength;
 
-        // Extract the current chunk
         std::string chunk = data.substr(sentLength, currentChunkSize);
-
-        // Send the chunk
         sendString(chunk);
 
-        // Delay
         sentLength += currentChunkSize;
         delay(delayBetweenChunks);
     }
