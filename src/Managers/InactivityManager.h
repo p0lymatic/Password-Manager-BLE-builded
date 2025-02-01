@@ -78,9 +78,8 @@ public:
     }
 
     void lockVault() {
-        globalState.setLoadedVaultPassword("");
-        globalState.setLoadedVaultPath("");
         shutdownScreen();
+        globalState.setVaultIsLocked(true);
         isShutdown = true;
         isLocked = true;
     }

@@ -53,7 +53,12 @@ ActionEnum VaultController::actionVaultSelected() {
         if (selectedIndex != -1) {
             return availableActions[selectedIndex];
         }
-        confirmation = confirmationSelector.select("Back to the Menu", "Close the vault ?");
+
+        if (globalState.getVaultIsLocked()) {
+            confirmation = true;
+        } else  {
+            confirmation = confirmationSelector.select("Back to the Menu", "Close the vault ?");
+        }
     }
 
     return ActionEnum::None;
