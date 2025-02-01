@@ -25,6 +25,7 @@ public:
 
     void reset() {
         lastInteractionTime = std::chrono::steady_clock::now();
+        globalState.setVaultIsLocked(false);
         if (isDimmed || isShutdown) {
             restoreScreen();
         }
