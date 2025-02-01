@@ -263,15 +263,20 @@ bool VaultController::loadSdVault() {
 bool VaultController::loadDataFromEncryptedFile(std::string path) {
     auto vaultBinary = sdService.readBinaryFile(path);
     VaultFile vaultFile = VaultFile(path, vaultBinary);
-    auto password = stringPromptSelector.select("Open encrypted vault", "Enter the password", "", false, false, false);
+    auto password = stringPromptSelector.select("Open encrypted vault", "Enter the password", "", false, true, false);
     display.subMessage("Loading...", 0);
     auto salt = vaultFile.getSalt();
     auto savedChecksum = vaultFile.getChecksum();
     auto encryptedData = vaultFile.getEncryptedData();
+    
+    // Bad password
     auto decryptedData = cryptoService.decryptWithPassphrase(encryptedData, password, salt);
-    auto dataChecksum = cryptoService.generateChecksum(decryptedData, globalState.getChecksumSize());
-
+    if (decryptedData.empty()) {
+        return false;
+    }
+    
     // Bad password or salt
+    auto dataChecksum = cryptoService.generateChecksum(decryptedData, globalState.getChecksumSize());
     if (savedChecksum != dataChecksum) {
         return false;
     }

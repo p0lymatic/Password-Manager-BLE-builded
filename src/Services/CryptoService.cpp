@@ -129,6 +129,11 @@ std::string CryptoService::decryptWithPassphrase(const std::vector<uint8_t>& enc
 
     // Supprimer le padding
     uint8_t padding = decrypted.back();
+    
+    // Verif du padding
+    if (padding == 0 || padding > 16) {
+        return ""; 
+    }
     decrypted.resize(decrypted.size() - padding);
 
     // Convert JSON
