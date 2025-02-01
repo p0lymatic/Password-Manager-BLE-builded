@@ -47,7 +47,7 @@ private:
     // Inactivity Timing
     uint32_t inactivityBrightnessTimeout = 12000; // 12 sec
     uint32_t inactivityScreenTimeout = 1 * 60 * 1000; // 1 min
-    uint32_t inactivityLockTimeout = 30 * 60 * 1000; // 30 mins
+    uint32_t inactivityLockTimeout = 10 * 60 * 1000; // 10 mins
 
     // Private constructor
     GlobalState() = default;

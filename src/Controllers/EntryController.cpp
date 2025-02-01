@@ -87,6 +87,7 @@ bool EntryController::handleEntryCreation() {
 
     auto randomPassword = cryptoService.generateRandomString(20);
     auto username = stringPromptSelector.select("Username or Email", "Enter username", lastUsername, false, true, false, 3, true);
+    display.subMessage("Loading...", 300); // avoid rendering too fast after OK input
     auto password = stringPromptSelector.select("Account Password", "Enter password", randomPassword, false, true, false, 3, true);
     auto notes = stringPromptSelector.select("Notes (Optionnal)", "Enter notes (OK to pass)", "", false, true, false, 0);
     notes = notes.empty() ? "No notes" : notes;
