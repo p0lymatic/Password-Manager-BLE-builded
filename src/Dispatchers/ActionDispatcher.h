@@ -27,6 +27,8 @@ private:
     // Méthodes privées
     ActionEnum determineActionByContext();
     void executeAction(ActionEnum action);
+
+    GlobalState& globalState = GlobalState::getInstance();
 };
 
 #endif // APP_DISPATCHER_H

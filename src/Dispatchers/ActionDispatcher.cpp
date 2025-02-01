@@ -21,12 +21,10 @@ void ActionDispatcher::run() {
 ActionEnum ActionDispatcher::determineActionByContext() {
     auto action = ActionEnum::None;
 
-    // Inactivity check
-    if(provider.getInactivityManager().getVaultIsLocked()) { 
+    // Vault lock state check
+    if(globalState.getVaultIsLocked()) { 
         context = ContextEnum::NoVault;
-        provider.getLedService().showLed();
-        provider.getInput().waitPress();
-        provider.getLedService().clearLed();
+        provider.getUtilityController().handleInactivity();
     }
 
     switch (context) {

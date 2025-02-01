@@ -153,5 +153,18 @@ bool UtilityController::handleGeneralSettings() {
             settings[verticalIndex] = timeLabels[selectedIndex] + " ";
         }
     }
+}
 
+void UtilityController::handleInactivity() {
+    ledService.showLed();
+    input.waitPress();
+    ledService.clearLed();
+    display.setBrightness(globalState.getSelectedScreenBrightness());
+    if (!globalState.getLoadedVaultPath().empty()) {
+        display.topBar("Inactivity", false, false);
+        display.subMessage("Vault has been locked", 3000);
+        globalState.setLoadedVaultPath("");
+        globalState.setLoadedVaultPassword("");
+        globalState.setVaultIsLocked(false);
+    }
 }

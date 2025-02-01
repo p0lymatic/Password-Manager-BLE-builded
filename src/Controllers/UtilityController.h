@@ -39,6 +39,7 @@ public:
     bool handleGeneralSettings();
     void handleLoadNvs();
     void handleWelcome();
+    void handleInactivity();
 
 private:
     IView& display;
