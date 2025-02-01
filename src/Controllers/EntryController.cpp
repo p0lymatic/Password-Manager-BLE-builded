@@ -64,6 +64,7 @@ bool EntryController::handleEntryCreation() {
     auto entryCount = entryService.getAllEntries().size();
     auto entryLimit = globalState.getMaxSavedPasswordCount();
     if (entryCount >= entryLimit) {
+        display.topBar("Passwords Limit", false, false);
         display.subMessage("Can't save more passwords", 2000);
         return false;
     }
