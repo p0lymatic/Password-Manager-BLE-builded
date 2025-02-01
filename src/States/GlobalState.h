@@ -40,6 +40,7 @@ private:
     // Last Vault
     std::string loadedVaultPath = "";
     std::string loadedVaultPassword = "";
+    bool vaultIsLocked = false;
 
     // Last Entry username
     std::string lastUsedUsername = "";
@@ -127,10 +128,12 @@ public:
     // Accesseurs pour les informations du dernier coffre chargé
     const std::string& getLoadedVaultPath() const { return loadedVaultPath; }
     const std::string& getLoadedVaultPassword() const { return loadedVaultPassword; }
+    bool getVaultIsLocked() const { return vaultIsLocked; }
 
     // Mutateurs pour les informations du dernier coffre chargé
     void setLoadedVaultPath(const std::string& path) { loadedVaultPath = path; }
     void setLoadedVaultPassword(const std::string& password) { loadedVaultPassword = password; }
+    void setVaultIsLocked(bool locked) { vaultIsLocked = locked; }
 
     // Accesseurs pour les temps d'inactivité
     uint32_t getInactivityBrightnessTimeout() const { return inactivityBrightnessTimeout; }
@@ -147,7 +150,6 @@ public:
     
     // Mutateurs pour le dernier identifiant entry
     void setLastUsedUsername(const std::string& username) { lastUsedUsername = username; }
-
 };
 
 #endif // GLOBAL_STATE_H
