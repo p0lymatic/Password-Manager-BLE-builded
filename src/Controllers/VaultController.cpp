@@ -75,6 +75,15 @@ bool VaultController::handleVaultCreation() {
         return false; // back button hits
     }
 
+    // Verify if a vault file with this name exists
+    auto vaultPath = globalState.getDefaultVaultPath() + "/" + vaultName + ".vault";
+    if (sdService.isFile(vaultPath)) {
+        auto confirmation = confirmationSelector.select("Vault already exists", "Erase the vault ?");
+        if (!confirmation) {
+            return false;
+        }
+    }
+
     // Get the password
     std::string pass1 = "";
     std::string pass2 = "";
@@ -93,7 +102,6 @@ bool VaultController::handleVaultCreation() {
     auto jsonEncrypted = cryptoService.encryptWithPassphrase(jsonEmpty, pass1, salt);
 
     // Create VaultFile to handle data
-    auto vaultPath = globalState.getDefaultVaultPath() + "/" + vaultName + ".vault";
     VaultFile vault = VaultFile(vaultPath, {});
     vault.setSalt(salt);
     vault.setChecksum(checksum);

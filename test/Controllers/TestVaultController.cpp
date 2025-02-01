@@ -100,6 +100,7 @@ void test_handleVaultCreation() {
     JsonTransformer jsonTransformer;
     ModelTransformer modelTransformer;
     InactivityManager inactivityManager(mockDisplay);
+    GlobalState& globalState = GlobalState::getInstance();
 
     StringPromptSelector stringPromptSelector(mockDisplay, mockInput);
     VerticalSelector verticalSelector(mockDisplay, mockInput, inactivityManager);
@@ -121,6 +122,15 @@ void test_handleVaultCreation() {
     mockInput.enqueueKey('s');
     mockInput.enqueueKey('t');
     mockInput.enqueueKey(KEY_OK);
+
+    // Ensure UnitTest vault file is deleted before create a new one
+    auto unitTestVaultPath = globalState.getDefaultVaultPath() + "/UnitTest.vault";
+    sdService.begin();
+    if (sdService.isFile(unitTestVaultPath)) {
+        mockInput.enqueueKey(KEY_OK); // confirm deletion during creation process
+    }
+    sdService.close();
+
 
     // Pass1
     mockInput.enqueueKey('M');

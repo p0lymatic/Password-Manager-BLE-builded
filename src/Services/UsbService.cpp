@@ -21,7 +21,7 @@ void UsbService::end() {
 }
 
 void UsbService::sendString(const std::string& text) {
-    // We wait for 1.5sec
+    // We wait 1.5sec for hid init
     while (millis() - initTime < 1500) {
         delay(10);
     }
