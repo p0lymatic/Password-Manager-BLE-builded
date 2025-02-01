@@ -206,6 +206,14 @@ std::vector<std::string> SdService::getCachedDirectoryElements(const std::string
     return elements;
 }
 
+void SdService::setCachedDirectoryElements(const std::string& path, const std::vector<std::string>& elements) {
+    cachedDirectoryElements[path] = elements;
+}
+
+void SdService::removeCachedPath(const std::string& path) {
+    cachedDirectoryElements.erase(path);
+}
+
 std::string SdService::getFileName(const std::string& path) {
     size_t lastSlash = path.find_last_of('/');
     size_t lastDot = path.find_last_of('.');

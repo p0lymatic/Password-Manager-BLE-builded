@@ -38,6 +38,8 @@ public:
     std::string getParentDirectory(const std::string& path);
     std::string getFileName(const std::string& path);
     std::vector<std::string> getCachedDirectoryElements(const std::string& path);
+    void setCachedDirectoryElements(const std::string& path, const std::vector<std::string>& elements);
+    void removeCachedPath(const std::string& path);
 };
 
 #endif // SD_SERVICE_H

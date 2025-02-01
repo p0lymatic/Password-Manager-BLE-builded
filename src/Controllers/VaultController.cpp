@@ -116,6 +116,8 @@ bool VaultController::handleVaultCreation() {
     if (!confirmation) {
         return false;
     }
+    // New content in this directory, remove cached elements
+    sdService.removeCachedPath(globalState.getDefaultVaultPath());
 
     // Update state
     globalState.setLoadedVaultPassword(pass1);
