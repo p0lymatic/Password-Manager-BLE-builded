@@ -215,11 +215,16 @@ bool VaultController::loadSdVault() {
         return false;
     }
 
+    // Check path
     std::string currentPath = nvsService.getString(globalState.getNvsLastUsedVaultPath());
-    currentPath = sdService.isDirectory(currentPath) ? currentPath : "/";
-    std::vector<std::string> elementNames;
+    currentPath = sdService.isDirectory(currentPath) ? currentPath : "";
+    if (currentPath.empty()) {
+        auto defaultPath = globalState.getDefaultVaultPath();
+        currentPath = sdService.ensureDirectory(defaultPath) ? defaultPath : "/";
+    }
     
     // Explore folder to find a .vault file
+    std::vector<std::string> elementNames;
     do {
         // Current path is a file
         if (sdService.isFile(currentPath)) {
