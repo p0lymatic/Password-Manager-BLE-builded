@@ -35,6 +35,10 @@ char CardputerInput::handler() {
             }
 
             for (auto c : status.word) {
+                // Issue with %, the only key that requires 2 inputs to display
+                if (c == '%') {
+                    return '5'; 
+                }
                 return c; // retourner le premier char saisi
             }
         }
