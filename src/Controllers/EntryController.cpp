@@ -99,8 +99,8 @@ bool EntryController::handleEntryCreation() {
 }
 
 bool EntryController::handleEntryUpdate(Entry& entry, Field& field) {
-    auto value = stringPromptSelector.select(field.getLabel(), "Modify the value", field.getValue(), true, true);
-    if (value.empty()) {
+    auto value = stringPromptSelector.select(field.getLabel(), "Modify the value", field.getValue(), false, true);
+    if (value == field.getValue()) {
         return false;
     }
 
@@ -110,6 +110,7 @@ bool EntryController::handleEntryUpdate(Entry& entry, Field& field) {
     if (field.getLabel() == "User") {
         globalState.setLastUsedUsername(field.getValue());
     }
+
     return true;
 }
 

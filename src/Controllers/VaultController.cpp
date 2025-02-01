@@ -221,7 +221,7 @@ bool VaultController::loadSdVault() {
                     display.subMessage("Loaded successfully", 2000);
                     return true;
                 } else {
-                    display.subMessage("Invalid Paswword", 2000);    
+                    display.subMessage("Invalid Password", 2000);    
                 }
             } else {
                 display.subMessage("Invalid File", 2000);
