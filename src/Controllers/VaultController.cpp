@@ -61,6 +61,14 @@ ActionEnum VaultController::actionVaultSelected() {
 
 
 bool VaultController::handleVaultCreation() {
+    // Check SD card
+    display.topBar("Create a new vault", false, false);
+    display.subMessage("Loading...", 500);
+    if (!sdService.begin()) {
+        display.subMessage("SD card not found", 2000);
+        return false;
+    }
+
     // Get a vault name
     auto vaultName = stringPromptSelector.select("Create a new vault", "Enter the vault name", "", true, false, true);
     if (vaultName.empty()) {
