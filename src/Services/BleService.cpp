@@ -79,7 +79,9 @@ BleService::BleService()
       server(nullptr),
       enabled(false),
       initialized(false), 
-      initTime(0) {}
+      initTime(0),
+      currentPasskey(0),
+      displayPairingCodeCallback(nullptr) {}
 
 void BleService::begin(const std::string& name) {
     if (!enabled || initialized) {
@@ -149,17 +151,25 @@ void BleService::initBLE(const std::string& deviceName) {
 }
 
 void BleService::setupSecurity() {
+    // Generate a random passkey
+    currentPasskey = generateRandomPasskey();
+    
     // Enable security features including bonding
-    // Simplify security to just use bonding - this works better on Windows
+    // Using DISPLAY_ONLY mode - requires the device to display a passkey to user
     NimBLEDevice::setSecurityAuth(BLE_SM_PAIR_AUTHREQ_BOND);
     NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_ONLY);
-    NimBLEDevice::setSecurityPasskey(pairingPasskey);
+    NimBLEDevice::setSecurityPasskey(currentPasskey);
     
     // Additional security settings that help with Windows connections
     NimBLEDevice::setSecurityInitKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
     NimBLEDevice::setSecurityRespKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
     
-    Serial.printf("BLE security configured with passkey: %d\n", pairingPasskey);
+    Serial.printf("BLE security configured with passkey: %d\n", currentPasskey);
+    
+    // If a callback is registered, call it with the generated passkey
+    if (displayPairingCodeCallback) {
+        displayPairingCodeCallback(currentPasskey);
+    }
 }
 
 void BleService::end() {
@@ -387,4 +397,17 @@ void BleService::triggerConnection() {
     delay(10);
     
     Serial.println("Sent dummy keystroke to activate BLE connection");
+}
+
+uint32_t BleService::generateRandomPasskey() {
+    // Generate a random 6-digit passkey (100000-999999)
+    return 100000 + random(900000);
+}
+
+uint32_t BleService::getCurrentPasskey() const {
+    return currentPasskey;
+}
+
+void BleService::setDisplayPairingCodeCallback(std::function<void(uint32_t)> callback) {
+    displayPairingCodeCallback = callback;
 }

@@ -46,7 +46,9 @@ public:
     void triggerConnection();
     
     // Security
-    static const uint32_t pairingPasskey = 123456;
+    static uint32_t generateRandomPasskey();
+    uint32_t getCurrentPasskey() const;
+    void setDisplayPairingCodeCallback(std::function<void(uint32_t)> callback);
 
 private:
     void initBLE(const std::string& deviceName);
@@ -71,6 +73,8 @@ private:
     bool enabled;
     bool initialized;
     uint32_t initTime;
+    uint32_t currentPasskey;
+    std::function<void(uint32_t)> displayPairingCodeCallback;
     Preferences preferences;
 };
 
