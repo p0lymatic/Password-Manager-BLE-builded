@@ -42,8 +42,8 @@ void KeyboardService::setLayout(const uint8_t* newLayout) {
     // Set layout for USB keyboard
     usbService.setLayout(newLayout);
     
-    // BLE keyboard doesn't use the same layout mechanism as it interprets keystrokes
-    // differently, but we could potentially modify the BLE service to handle layouts
+    // Set layout for BLE keyboard
+    bleService.setLayout(newLayout);
 }
 
 void KeyboardService::sendString(const std::string& text) {

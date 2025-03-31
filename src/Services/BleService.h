@@ -50,6 +50,10 @@ public:
     uint32_t getCurrentPasskey() const;
     void setDisplayPairingCodeCallback(std::function<void(uint32_t)> callback);
 
+    // Keyboard layout management
+    void setLayout(const uint8_t* newLayout);
+    const uint8_t* getCurrentLayout() const;
+
 private:
     void initBLE(const std::string& deviceName);
     void setupSecurity();
@@ -76,6 +80,7 @@ private:
     uint32_t currentPasskey;
     std::function<void(uint32_t)> displayPairingCodeCallback;
     Preferences preferences;
+    const uint8_t* currentLayout;  // Current keyboard layout
 };
 
 #endif // BLESERVICE_H

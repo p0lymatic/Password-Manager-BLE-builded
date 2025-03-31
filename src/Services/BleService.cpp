@@ -1,4 +1,8 @@
 #include "BleService.h"
+#include "../lib/USBHIDKeyboard/KeyboardLayout.h"
+
+// Declare the external keyboard layout
+extern const uint8_t KeyboardLayout_en_US[128];
 
 // HID Report Descriptor for keyboard
 const uint8_t BleService::reportDescriptor[] = {
@@ -81,7 +85,8 @@ BleService::BleService()
       initialized(false), 
       initTime(0),
       currentPasskey(0),
-      displayPairingCodeCallback(nullptr) {}
+      displayPairingCodeCallback(nullptr),
+      currentLayout(KeyboardLayout_en_US) {}
 
 void BleService::begin(const std::string& name) {
     if (!enabled || initialized) {
@@ -155,16 +160,16 @@ void BleService::setupSecurity() {
     currentPasskey = generateRandomPasskey();
     
     // Enable security features including bonding
-    // Using DISPLAY_ONLY mode - requires the device to display a passkey to user
-    NimBLEDevice::setSecurityAuth(BLE_SM_PAIR_AUTHREQ_BOND);
-    NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_ONLY);
+    // Force KEYBOARD_DISPLAY mode to require PIN entry
+    NimBLEDevice::setSecurityAuth(BLE_SM_PAIR_AUTHREQ_BOND | BLE_SM_PAIR_AUTHREQ_MITM | BLE_SM_PAIR_AUTHREQ_SC);
+    NimBLEDevice::setSecurityIOCap(BLE_HS_IO_KEYBOARD_DISPLAY);
     NimBLEDevice::setSecurityPasskey(currentPasskey);
     
     // Additional security settings that help with Windows connections
     NimBLEDevice::setSecurityInitKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
     NimBLEDevice::setSecurityRespKey(BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID);
     
-    Serial.printf("BLE security configured with passkey: %d\n", currentPasskey);
+    Serial.printf("BLE security configured with passkey: %d (Enhanced security enabled)\n", currentPasskey);
     
     // If a callback is registered, call it with the generated passkey
     if (displayPairingCodeCallback) {
@@ -292,56 +297,26 @@ void BleService::sendKey(uint8_t keyCode) {
 }
 
 void BleService::sendKeyDown(uint8_t keyCode) {
-    // Simple ASCII to HID conversion (only handles basic characters)
-    uint8_t key = 0;
-    uint8_t modifier = 0;
+    // Use the current keyboard layout
+    const uint8_t* layout = currentLayout;
     
-    if (keyCode >= 'a' && keyCode <= 'z') {
-        key = keyCode - 'a' + 4;
-    } else if (keyCode >= 'A' && keyCode <= 'Z') {
-        key = keyCode - 'A' + 4;
-        modifier = 0x02;  // Shift
-    } else if (keyCode >= '1' && keyCode <= '9') {
-        key = keyCode - '1' + 30;
-    } else if (keyCode == '0') {
-        key = 39;
-    } else if (keyCode == ' ') {
-        key = 44;
-    } else if (keyCode == '\n' || keyCode == '\r') {
-        key = 40;  // Enter
-    } else if (keyCode == '\t') {
-        key = 43;  // Tab
-    } else {
-        // Handling some special characters
-        switch (keyCode) {
-            case '-': key = 45; break;
-            case '=': key = 46; break;
-            case '[': key = 47; break;
-            case ']': key = 48; break;
-            case '\\': key = 49; break;
-            case ';': key = 51; break;
-            case '\'': key = 52; break;
-            case '`': key = 53; break;
-            case ',': key = 54; break;
-            case '.': key = 55; break;
-            case '/': key = 56; break;
-            case '!': key = 30; modifier = 0x02; break;  // Shift + 1
-            case '@': key = 31; modifier = 0x02; break;  // Shift + 2
-            case '#': key = 32; modifier = 0x02; break;  // Shift + 3
-            case '$': key = 33; modifier = 0x02; break;  // Shift + 4
-            case '%': key = 34; modifier = 0x02; break;  // Shift + 5
-            case '^': key = 35; modifier = 0x02; break;  // Shift + 6
-            case '&': key = 36; modifier = 0x02; break;  // Shift + 7
-            case '*': key = 37; modifier = 0x02; break;  // Shift + 8
-            case '(': key = 38; modifier = 0x02; break;  // Shift + 9
-            case ')': key = 39; modifier = 0x02; break;  // Shift + 0
-            default: return;  // Ignore unsupported characters
-        }
+    // Lookup the HID code and modifier
+    uint8_t hidCode = layout[keyCode];
+    
+    // If the character is not supported, return
+    if (hidCode == 0x00) {
+        return;
     }
     
-    keyboardReport[0] = modifier;
-    keyboardReport[2] = key;
+    uint8_t key = hidCode & 0x7F;  // Remove modifier bit
+    uint8_t modifier = (hidCode & 0x80) ? 0x02 : 0x00;  // Left Shift
     
+    // Prepare the HID report
+    memset(keyboardReport, 0, sizeof(keyboardReport));
+    keyboardReport[0] = modifier;  // Modifier keys
+    keyboardReport[2] = key;       // Key code
+    
+    // Send the HID report
     sendHIDReport(keyboardReport, sizeof(keyboardReport));
 }
 
@@ -410,4 +385,13 @@ uint32_t BleService::getCurrentPasskey() const {
 
 void BleService::setDisplayPairingCodeCallback(std::function<void(uint32_t)> callback) {
     displayPairingCodeCallback = callback;
+}
+
+void BleService::setLayout(const uint8_t* newLayout) {
+    // Ensure layout is not null, default to US layout if it is
+    currentLayout = newLayout ? newLayout : KeyboardLayout_en_US;
+}
+
+const uint8_t* BleService::getCurrentLayout() const {
+    return currentLayout;
 }
