@@ -13,7 +13,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install PlatformIO
         run: pip install platformio
@@ -21,12 +21,12 @@ jobs:
       - name: Build firmware
         run: pio run
 
-      - name: Show build folder content
+      - name: Show build folder contents
         run: |
-          echo "=== Папка .pio/build ==="
-          ls -lR .pio/build || echo "Нет папки .pio/build"
+          echo "=== Содержимое .pio/build ==="
+          ls -lR .pio/build || echo "Папка .pio/build отсутствует"
 
-      - name: Upload any .bin files
+      - name: Upload firmware binaries
         uses: actions/upload-artifact@v4
         with:
           name: firmware-binaries
