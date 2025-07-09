@@ -7,10 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -23,8 +21,13 @@ jobs:
       - name: Build firmware
         run: pio run
 
-      - name: Upload firmware
+      - name: Show build folder content
+        run: |
+          echo "=== Папка .pio/build ==="
+          ls -lR .pio/build || echo "Нет папки .pio/build"
+
+      - name: Upload any .bin files
         uses: actions/upload-artifact@v4
         with:
-          name: cardputer-firmware
+          name: firmware-binaries
           path: '**/*.bin'
